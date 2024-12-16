@@ -1,6 +1,6 @@
 {
-    "name": "[edge] Wmbusmeters (W-MBus to MQTT)",
-    "version": "1.14.0-36",
+    "name": "(test) [edge] Wmbusmeters (W-MBus to MQTT)",
+    "version": "1.14.0-37",
     "slug": "wmbusmeters-ha-addon-edge",
     "description": "Acquire utility meter readings using the wireless mbus protocol (WMBUS)",
     "arch": ["armv7", "aarch64", "amd64"],
@@ -28,10 +28,16 @@
     ],
     "options": {
       "reset_config": "no",
-      "MbusTTY": "/root/ttyMBUS0"
+      "MbusTTY": "/root/ttyMBUS0",
+      "MbusTTYbaud": "2400",
+      "MbusTCPhost": "192.168.3.119",
+      "MbusTCPhostPort": "2003"
     },
     "schema": {
       "reset_config": "list(no|yes)",
-      "MbusTTY":  "str"
+      "MbusTTY":  "str",
+      "MbusTTYbaud":  "int",
+      "MbusTCPhost":  "str",
+      "MbusTCPhostPort":  "port"
     }
 }
