@@ -16,9 +16,10 @@ then
     bashio::addon.restart
 fi
 
-if bashio::config.exists 'MbusTTY'
+if bashio::config.exists "MbusTTY"
 then
-    bashio::addon.option 'MbusTTY'
+    bashio::log.info "Removing MbusTTY Option"
+    bashio::addon.option "MbusTTY"
 fi
 
 CONFIG_DATA_PATH=$(bashio::jq "${CONFIG_PATH}" '.data_path')
@@ -114,8 +115,8 @@ if [ "$(bashio::config 'MbusTCPenabled')" = "yes" ]
 then
     bashio::log.info "Running socat ..."
     bashio::log.info "while true; do socat pty,group-late=tty,link="$(bashio::config 'MbusTCPtty')",mode=660,rawer,echo=0,b"$(bashio::config 'MbusTCPttyBaud')",waitslave,ignoreeof tcp:"$(bashio::config 'MbusTCPhost')":"$(bashio::config 'MbusTCPhostPort')"; done&"
-    while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
-    #while true; do socat pty,group-late=tty,link="$(bashio::config 'MbusTCPtty')",mode=660,rawer,echo=0,b"$(bashio::config 'MbusTCPttyBaud')",waitslave,ignoreeof tcp:"$(bashio::config 'MbusTCPhost')":"$(bashio::config 'MbusTCPhostPort')"; done&
+    #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
+    while true; do socat pty,group-late=tty,link="$(bashio::config 'MbusTCPtty')",mode=660,rawer,echo=0,b"$(bashio::config 'MbusTCPttyBaud')",waitslave,ignoreeof tcp:"$(bashio::config 'MbusTCPhost')":"$(bashio::config 'MbusTCPhostPort')"; done&
 fi
 
 bashio::log.info "Running wmbusmeters ..."
