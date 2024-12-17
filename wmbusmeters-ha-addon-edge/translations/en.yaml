@@ -14,7 +14,7 @@ configuration:
     description: Baudrate for MbusTCP tty in socat
   MbusTCPhost:
     name: MbusTCP hostname/IP
-    description: hostname/IP of Serial Over Lan support(MbusTCP) server for socat
+    description: hostname/IP of Serial Over Lan (MbusTCP) server for socat
   MbusTCPhostPort:
     name: MbusTCP port
-    description: TCP port of Serial Over Lan support(MbusTCP) for socat
+    description: TCP port of Serial Over Lan (MbusTCP) for socat
