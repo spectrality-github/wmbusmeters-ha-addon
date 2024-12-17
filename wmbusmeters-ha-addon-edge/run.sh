@@ -112,15 +112,9 @@ then
     MbusTCPttyBaud=$(bashio::config 'MbusTCPttyBaud')
     MbusTCPhost=$(bashio::config 'MbusTCPhost')
     MbusTCPhostPort=$(bashio::config 'MbusTCPhostPort')
-    bashio::log.info "while true; do socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort; done&"
+    bashio::log.info "while true; do socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort; done"
     while true; do socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort; done&
     #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
-fi
-
-if [ "$(bashio::config 'MbusTCPenabled')" = "yesStatic" ]
-then
-    bashio::log.info "Running socat ..."
-    while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
 fi
 
 bashio::log.info "Running wmbusmeters ..."
