@@ -28,15 +28,17 @@
     ],
     "options": {
       "reset_config": "no",
-      "MbusTTY": "/root/ttyMBUS0",
-      "MbusTTYbaud": "2400",
+      "MbusTCPenabled": "no",
+      "MbusTCPtty": "/root/ttyMBUS0",
+      "MbusTCPttyBaud": "2400",
       "MbusTCPhost": "192.168.3.119",
       "MbusTCPhostPort": "2003"
     },
     "schema": {
       "reset_config": "list(no|yes)",
-      "MbusTTY":  "str",
-      "MbusTTYbaud":  "int",
+      "MbusTCPenabled": "list(no|yes)",
+      "MbusTCPtty":  "str",
+      "MbusTCPttyBaud":  "int",
       "MbusTCPhost":  "str",
       "MbusTCPhostPort":  "port"
     }
