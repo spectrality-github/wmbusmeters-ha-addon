@@ -125,11 +125,10 @@ then
     bashio::log.info "Listing tty devices: $(ls -l /root/tty*)"
     #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
     
-    bashio::log.info "Running wmbusmeters ..."
     remaining_attemps=5
     while (( remaining_attemps-- > 0 ))
     do
-        if [[ $(ls $MbusTCPtty) == 0 ]]
+        if [ -f $MbusTCPtty ]
         then
             bashio::log.info "Running wmbusmeters ..."
             /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
