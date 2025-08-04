@@ -121,22 +121,21 @@ then
     bashio::log.info "Running socat ..."
     bashio::log.info "while true; do socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort; done"
     while true; do socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort; done&
-    sleep 1
-    bashio::log.info "Listing tty devices: $(ls -l /root/tty*)"
     #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
     
     remaining_attemps=5
-    while (( remaining_attemps-- > 0 ))
+    while ( remaining_attemps-- > 0 )
     do
-        if [ -f $MbusTCPtty ]
+        if [ ! -f $MbusTCPtty ]
         then
             bashio::log.info "Running wmbusmeters ..."
+            bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
             /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
         fi
         sleep 3
         bashio::log.info "Remaining attemps $remaining_attemps"
     done
-    bashio::log.info "MbusTCPtty device not found rebooting"
+    bashio::log.info "MbusTCPtty device not found, rebooting"
     exit 1
 else
     bashio::log.info "Running wmbusmeters ..."
