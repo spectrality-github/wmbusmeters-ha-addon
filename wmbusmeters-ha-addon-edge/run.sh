@@ -126,7 +126,7 @@ then
     remaining_attemps=5
     while (( remaining_attemps-- > 0 ))
     do
-        if [ -f $($MbusTCPtty) ]
+        if [ -f $MbusTCPtty ]
         then
             bashio::log.info "Running wmbusmeters ..."
             bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
