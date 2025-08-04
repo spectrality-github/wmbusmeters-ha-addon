@@ -126,13 +126,14 @@ then
     remaining_attemps=5
     while (( remaining_attemps-- > 0 ))
     do
-        if [ -f $MbusTCPtty ]
+        if [ -f $($MbusTCPtty) ]
         then
             bashio::log.info "Running wmbusmeters ..."
             bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
             /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
         fi
         sleep 3
+        bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
         bashio::log.info "Remaining attemps $remaining_attemps"
     done
     bashio::log.info "MbusTCPtty device not found, rebooting"
