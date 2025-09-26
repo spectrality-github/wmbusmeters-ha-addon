@@ -133,6 +133,7 @@ then
     do
         if [ -e $MbusTCPtty ]
         then
+            bashio::log.info "MbusTCPtty device found"
             bashio::log.info "Running wmbusmeters ..."
             bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
             /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
