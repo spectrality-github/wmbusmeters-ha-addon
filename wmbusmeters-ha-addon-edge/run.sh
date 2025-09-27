@@ -16,6 +16,54 @@ then
     bashio::addon.restart
 fi
 
+
+if [ "$(bashio::config 'MbusTCPenabled')" = "yes" ]
+then
+    MbusTCPtty=$(bashio::config 'MbusTCPtty')
+    MbusTCPttyBaud=$(bashio::config 'MbusTCPttyBaud')
+    MbusTCPhost=$(bashio::config 'MbusTCPhost')
+    MbusTCPhostPort=$(bashio::config 'MbusTCPhostPort')
+
+    while true
+    do 
+        bashio::log.info "Testing is MbusTCP accessible ..."
+        if nc -w 3 -z $MbusTCPhost $MbusTCPhostPort
+        then
+            bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is accessible $(dig +short $MbusTCPhost) IP"
+            bashio::log.info "Running socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort"
+            socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort 
+        else
+            bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is not accessible $(dig +short $MbusTCPhost) IP"
+            sleep 5
+        fi        
+    done&
+    #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.9:2003; done&
+
+    sleep 2
+    bashio::log.info "Checking is MbusTCPtty device already available"
+    remaining_attempts=5
+    while (( remaining_attempts-- > 0 ))
+    do
+        if [ -e $MbusTCPtty ]
+        then
+            break
+        else
+            sleep 3
+            bashio::log.info "Retrying.Remaining attempts $remaining_attempts"
+        fi        
+    done
+    if [! -e $MbusTCPtty ]
+    then
+        bashio::log.info "MbusTCPtty device not found, rebooting"
+        sleep 5
+        bashio::addon.restart
+        #exit 1       
+    fi
+    
+    bashio::log.info "MbusTCPtty device found"
+    bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
+fi
+
 CONFIG_DATA_PATH=$(bashio::jq "${CONFIG_PATH}" '.data_path')
 CONFIG_CONF=$(bashio::jq "${CONFIG_PATH}" '.conf')
 CONFIG_METERS=$(bashio::jq "${CONFIG_PATH}" '.meters')
@@ -105,46 +153,6 @@ chmod a+x /wmbusmeters/mosquitto_pub.sh
 bashio::log.info "Starting web configuration service."
 python3 /flask/app.py &
 
-if [ "$(bashio::config 'MbusTCPenabled')" = "yes" ]
-then
-    MbusTCPtty=$(bashio::config 'MbusTCPtty')
-    MbusTCPttyBaud=$(bashio::config 'MbusTCPttyBaud')
-    MbusTCPhost=$(bashio::config 'MbusTCPhost')
-    MbusTCPhostPort=$(bashio::config 'MbusTCPhostPort')
+bashio::log.info "Running wmbusmeters ..."
+/wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
 
-    while true
-    do 
-        bashio::log.info "Testing is MbusTCP accessible ..."
-        if nc -w 3 -z $MbusTCPhost $MbusTCPhostPort
-        then
-            bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is accessible $(dig +short $MbusTCPhost) IP"
-            bashio::log.info "Running socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort"
-            socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort 
-        else
-            bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is not accessible $(dig +short $MbusTCPhost) IP"
-            sleep 5
-        fi        
-    done&
-    #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
-
-    sleep 2
-    bashio::log.info "Checking is MbusTCPtty device already available"
-    remaining_attempts=5
-    while (( remaining_attempts-- > 0 ))
-    do
-        if [ -e $MbusTCPtty ]
-        then
-            bashio::log.info "MbusTCPtty device found"
-            bashio::log.info "Listing tty devices: $(ls -l $MbusTCPtty)"
-            bashio::log.info "Running wmbusmeters ..."
-            /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
-        fi
-        sleep 3
-        bashio::log.info "Retrying.Remaining attempts $remaining_attempts"
-    done
-    bashio::log.info "MbusTCPtty device not found, rebooting"
-    exit 1
-else
-    bashio::log.info "Running wmbusmeters ..."
-    /wmbusmeters/wmbusmeters --useconfig=$CONFIG_DATA_PATH
-fi
