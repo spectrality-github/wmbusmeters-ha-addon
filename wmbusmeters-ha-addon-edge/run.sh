@@ -52,7 +52,7 @@ then
             bashio::log.info "Retrying.Remaining attempts $remaining_attempts"
         fi        
     done
-    if [! -e $MbusTCPtty ]
+    if [ ! -e $MbusTCPtty ]
     then
         bashio::log.info "MbusTCPtty device not found, rebooting"
         sleep 5
