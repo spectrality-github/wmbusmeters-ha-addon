@@ -118,15 +118,16 @@ then
         if nc -w 3 -z $MbusTCPhost $MbusTCPhostPort
         then
             bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is accessible $(dig +short $MbusTCPhost) IP"
+            bashio::log.info "Running socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort"
+            socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort 
         else
             bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is not accessible $(dig +short $MbusTCPhost) IP"
-        fi    
-        bashio::log.info "Running socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort"
-        socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort 
+            sleep 5
+        fi        
     done&
     #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.119:2003; done&
 
-    sleep 1
+    sleep 2
     bashio::log.info "Checking is MbusTCPtty device already available"
     remaining_attempts=5
     while (( remaining_attempts-- > 0 ))
