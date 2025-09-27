@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM AS build
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 RUN apk add --no-cache alpine-sdk gcc linux-headers libxml2-dev cmake libusb-dev bash samurai libxslt-dev pkgconf jq
 
@@ -10,7 +10,8 @@ RUN git clone https://github.com/steve-m/librtlsdr.git && \
     git clone https://github.com/spectrality-github/wmbusmeters.git && \
     git clone https://github.com/libxmq/xmq.git && \
     git clone https://github.com/weetmuts/rtl-wmbus.git && \
-    git clone https://github.com/merbanan/rtl_433.git
+    git clone https://github.com/merbanan/rtl_433.git && \
+    git clone https://github.com/ED6E0F17/rtl_reset.git
 
 WORKDIR /librtlsdr
 RUN cmake -B build -G Ninja \
