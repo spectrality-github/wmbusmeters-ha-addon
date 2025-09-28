@@ -77,6 +77,7 @@ RUN chmod a+x /etc/services.d/flask/finish
 RUN chmod a+x /etc/services.d/wmbusmeters/run
 RUN chmod a+x /etc/services.d/wmbusmeters/finish
 RUN chmod a+x /etc/cont-init.d/nginx.sh
+RUN chmod a+x /etc/cont-init.d/checkMbusTCPenabled.sh
 RUN chmod a+x /etc/services.d/socat/run
 RUN chmod a+x /etc/services.d/socat/finish
 
