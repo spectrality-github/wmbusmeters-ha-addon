@@ -23,8 +23,8 @@ then
     MbusTCPhost=$(bashio::config 'MbusTCPhost')
     MbusTCPhostPort=$(bashio::config 'MbusTCPhostPort')
 
-    while true
-    do 
+    #while true
+    #do 
         bashio::log.info "Testing is MbusTCP accessible ..."
         if nc -w 3 -z $MbusTCPhost $MbusTCPhostPort
         then
@@ -33,9 +33,9 @@ then
             socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort 
         else
             bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is not accessible $(dig +short $MbusTCPhost) IP"
-            sleep 5
+            #sleep 5
         fi        
-    done&
+    #done&
     #while true; do socat pty,group-late=tty,link=/root/ttyMBUS0,mode=660,rawer,echo=0,b2400,waitslave,ignoreeof tcp:192.168.3.9:2003; done&
 
     sleep 2
