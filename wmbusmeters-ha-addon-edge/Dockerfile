@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM AS build
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 RUN apk add --no-cache alpine-sdk gcc linux-headers libxml2-dev cmake libusb-dev bash samurai libxslt-dev pkgconf jq
 
@@ -44,7 +44,7 @@ RUN make
 
 FROM $BUILD_FROM AS scratch
 ENV QEMU_EXECVE=1
-RUN apk add --no-cache mosquitto-clients libstdc++ curl libusb libxml2 netcat-openbsd nginx
+RUN apk add --no-cache mosquitto-clients libstdc++ curl libusb libxml2 netcat-openbsd nginx socat
 
 # Install Flask
 RUN apk add --update py3-pip py3-cryptography py3-flask py3-requests py3-waitress py3-xmltodict
