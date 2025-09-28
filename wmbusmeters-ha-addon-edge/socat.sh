@@ -12,7 +12,7 @@ then
     then
         bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is accessible $(dig +short $MbusTCPhost) IP"
         bashio::log.info "Running socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort"
-        socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort &
+        socat pty,group-late=tty,link=$MbusTCPtty,mode=660,rawer,echo=0,b$MbusTCPttyBaud,waitslave,ignoreeof tcp:$MbusTCPhost:$MbusTCPhostPort
     else
         bashio::log.info "$MbusTCPhost:$MbusTCPhostPort MbusTCP is not accessible $(dig +short $MbusTCPhost) IP"
         #sleep 5
