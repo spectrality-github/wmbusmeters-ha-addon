@@ -21,6 +21,7 @@ then
     MbusTCPtty=$(bashio::config 'MbusTCPtty')
     
     bashio::log.info "(wmbusmeters) Checking is MbusTCPtty device already available"
+    sleep 1
     remaining_attempts=5
     while (( remaining_attempts-- > 0 ))
     do
