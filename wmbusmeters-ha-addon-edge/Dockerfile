@@ -5,9 +5,9 @@ ENV LANG=C.UTF-8
 
 RUN apk add --no-cache alpine-sdk gcc linux-headers libxml2-dev cmake libusb-dev bash samurai libxslt-dev pkgconf jq
 
-ADD https://api.github.com/repos/wmbusmeters/wmbusmeters/git/refs/heads/master version.json
+ADD https://api.github.com/repos/spectrality-github/wmbusmeters/git/refs/heads/master version.json
 RUN git clone https://github.com/steve-m/librtlsdr.git && \
-    git clone https://github.com/wmbusmeters/wmbusmeters.git && \
+    git clone https://github.com/spectrality-github/wmbusmeters.git && \
     git clone https://github.com/libxmq/xmq.git && \
     git clone https://github.com/weetmuts/rtl-wmbus.git && \
     git clone https://github.com/merbanan/rtl_433.git && \
