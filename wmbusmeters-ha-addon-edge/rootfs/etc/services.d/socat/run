@@ -3,8 +3,5 @@
 # Start socat service
 # ==============================================================================
 
-if [ "$(bashio::config 'MbusTCPenabled')" = "yes" ]
-then
-  bashio::log.info "Starting socat service."
-  exec /socat.sh
-fi
+bashio::log.info "Starting socat service."
+exec /socat.sh
