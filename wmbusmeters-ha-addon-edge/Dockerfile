@@ -66,6 +66,9 @@ RUN chmod a+x /mqtt_discovery.sh
 COPY run.sh /
 RUN chmod a+x /run.sh
 
+COPY socat.sh /
+RUN chmod a+x /socat.sh
+
 COPY rootfs /
 RUN chmod a+x /etc/services.d/nginx/run
 RUN chmod a+x /etc/services.d/nginx/finish
@@ -74,5 +77,7 @@ RUN chmod a+x /etc/services.d/flask/finish
 RUN chmod a+x /etc/services.d/wmbusmeters/run
 RUN chmod a+x /etc/services.d/wmbusmeters/finish
 RUN chmod a+x /etc/cont-init.d/nginx.sh
+RUN chmod a+x /etc/services.d/socat/run
+RUN chmod a+x /etc/services.d/socat/finish
 
 ENTRYPOINT ["/init"]
